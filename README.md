@@ -30,25 +30,21 @@ let mut state = Stator::new(States::a());
 state.add_handler(States::a(), States::b(), ||
 {
     println!("a -> b");
-    log.borrow_mut().append("1");
 });
 
 state.add_handler(Stator::any_state(), States::b(), ||
 {
     println!("? -> b");
-    log.borrow_mut().append("2");
 });
 
 state.add_handler(States::a(), Stator::any_state(), ||
 {
     println!("a -> ?");
-    log.borrow_mut().append("3");
 });
 
 state.add_handler(Stator::any_state(), States::a(), ||
 {
     println!("? -> a");
-    log.borrow_mut().append("4");
 });
 ```
 
