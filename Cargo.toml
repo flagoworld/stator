@@ -1,0 +1,4 @@
+[package]
+name = "stator"
+version = "0.1.0"
+authors = ["Ryan <rlayne.ca@gmail.com>"]
