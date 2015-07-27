@@ -3,6 +3,5 @@ name = "stator"
 description = "Clearly manage state transitions using closures in Rust."
 version = "0.1.0"
 authors = ["Ryan Layne"]
-license = "MIT"
 license-file = "LICENSE"
 repository = "https://github.com/flagoworld/stator"

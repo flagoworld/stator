@@ -27,25 +27,25 @@ fn state_change()
 
     let mut state = Stator::new(States::a());
 
-    state.add_handler(States::a(), States::b(), ||
+    state.add_handler(States::a(), States::b(), |from: &String|
     {
         println!("a -> b");
         log.borrow_mut().append("1");
     });
 
-    state.add_handler(Stator::any_state(), States::b(), ||
+    state.add_handler(Stator::any_state(), States::b(), |from: &String|
     {
         println!("? -> b");
         log.borrow_mut().append("2");
     });
 
-    state.add_handler(States::a(), Stator::any_state(), ||
+    state.add_handler(States::a(), Stator::any_state(), |from: &String|
     {
         println!("a -> ?");
         log.borrow_mut().append("3");
     });
 
-    state.add_handler(Stator::any_state(), States::a(), ||
+    state.add_handler(Stator::any_state(), States::a(), |from: &String|
     {
         println!("? -> a");
         log.borrow_mut().append("4");
@@ -78,7 +78,7 @@ struct StatorHashKey
 pub struct Stator<'a>
 {
     current_state: String,
-    state_handlers: HashMap<StatorHashKey, Vec<Box<FnMut() + 'a>>>
+    state_handlers: HashMap<StatorHashKey, Vec<Box<FnMut(&String) + 'a>>>
 }
 
 impl<'a> Stator<'a>
@@ -90,7 +90,7 @@ impl<'a> Stator<'a>
         Stator { current_state: state.to_string(), state_handlers: HashMap::new() }
     }
 
-    pub fn add_handler<F: FnMut() + 'a>(&mut self, from: &str, to: &str, f: F)
+    pub fn add_handler<F: FnMut(&String) + 'a>(&mut self, from: &str, to: &str, f: F)
     {
         let key = StatorHashKey { from: from.to_string(), to: to.to_string() };
 
@@ -114,7 +114,7 @@ impl<'a> Stator<'a>
 
                 for handler in handlers
                 {
-                    (*handler)();
+                    (*handler)(&self.current_state);
                 }
             }
         }
@@ -128,7 +128,7 @@ impl<'a> Stator<'a>
 
                 for handler in handlers
                 {
-                    (*handler)();
+                    (*handler)(&self.current_state);
                 }
             }
         }
@@ -142,7 +142,7 @@ impl<'a> Stator<'a>
 
                 for handler in handlers
                 {
-                    (*handler)();
+                    (*handler)(&self.current_state);
                 }
             }
         }
@@ -156,7 +156,7 @@ impl<'a> Stator<'a>
 
                 for handler in handlers
                 {
-                    (*handler)();
+                    (*handler)(&self.current_state);
                 }
             }
         }

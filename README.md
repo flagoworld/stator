@@ -27,22 +27,22 @@ let mut state = Stator::new(States::a());
 4. Specify `Stator::any_state()` as both parameters to execute on every state change
 
 ```
-state.add_handler(States::a(), States::b(), ||
+state.add_handler(States::a(), States::b(), |from: &String|
 {
     println!("a -> b");
 });
 
-state.add_handler(Stator::any_state(), States::b(), ||
+state.add_handler(Stator::any_state(), States::b(), |from: &String|
 {
     println!("? -> b");
 });
 
-state.add_handler(States::a(), Stator::any_state(), ||
+state.add_handler(States::a(), Stator::any_state(), |from: &String|
 {
     println!("a -> ?");
 });
 
-state.add_handler(Stator::any_state(), States::a(), ||
+state.add_handler(Stator::any_state(), States::a(), |from: &String|
 {
     println!("? -> a");
 });
